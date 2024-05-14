@@ -1,6 +1,8 @@
 package ru.buyankin.spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.buyankin.spring.models.Book;
@@ -23,8 +25,21 @@ public class BooksService {
         this.readersRepository = readersRepository;
     }
 
-    public List<Book> index() {
-        return booksRepository.findAll();
+    public List<Book> index(int page, int booksPerPage, boolean sortByYear) {
+        List<Book> books;
+
+        if (booksPerPage == 0 && !sortByYear)
+            books = booksRepository.findAll();
+        else if (booksPerPage == 0)
+            books = booksRepository.findAll(Sort.by("year"));
+        else if (!sortByYear)
+            books = booksRepository.findAll(PageRequest.of(page, booksPerPage)).getContent();
+        else
+            books = booksRepository
+                    .findAll(PageRequest.of(page, booksPerPage, Sort.by("year")))
+                    .getContent();
+
+        return books;
     }
 
     public Book getBook(int id) {

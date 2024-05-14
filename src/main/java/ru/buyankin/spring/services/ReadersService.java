@@ -1,6 +1,7 @@
 package ru.buyankin.spring.services;
 
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.buyankin.spring.models.Book;
@@ -17,6 +18,7 @@ public class ReadersService {
 
     private final ReadersRepository readersRepository;
 
+    @Autowired
     public ReadersService(ReadersRepository readersRepository) {
         this.readersRepository = readersRepository;
     }
