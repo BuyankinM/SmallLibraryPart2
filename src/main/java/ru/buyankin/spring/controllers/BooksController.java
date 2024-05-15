@@ -52,6 +52,17 @@ public class BooksController {
         return "books/new";
     }
 
+    @GetMapping("/search")
+    public String searchBook() {
+        return "books/search";
+    }
+
+    @PostMapping("/search")
+    public String handleSearch(@RequestParam("query") String query, Model model) {
+        model.addAttribute("books", booksService.findBooksByTitlePrefix(query));
+        return "books/search";
+    }
+
     @PostMapping()
     public String createBook(@ModelAttribute("book") @Valid Book book,
                              BindingResult bindingResult) {

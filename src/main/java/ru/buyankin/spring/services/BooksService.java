@@ -77,4 +77,8 @@ public class BooksService {
         book.setOwner(reader);
         booksRepository.save(book);
     }
+
+    public List<Book> findBooksByTitlePrefix(String query) {
+        return booksRepository.findByTitleStartingWithIgnoreCase(query);
+    }
 }
