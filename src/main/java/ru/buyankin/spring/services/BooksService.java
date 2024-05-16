@@ -18,12 +18,10 @@ import java.util.List;
 public class BooksService {
 
     private final BooksRepository booksRepository;
-    private final ReadersRepository readersRepository;
 
     @Autowired
-    public BooksService(BooksRepository booksRepository, ReadersRepository readersRepository) {
+    public BooksService(BooksRepository booksRepository) {
         this.booksRepository = booksRepository;
-        this.readersRepository = readersRepository;
     }
 
     public List<Book> index(int page, int booksPerPage, boolean sortByYear) {
@@ -66,19 +64,22 @@ public class BooksService {
 
     @Transactional
     public void freeBook(int id) {
-        Book book = booksRepository.findById(id).get();
-        book.setOwner(null);
-        book.setIssueDate(null);
-        booksRepository.save(book);
+        booksRepository.findById(id).ifPresent(
+                book -> {
+                    book.setOwner(null);
+                    book.setIssueDate(null);
+                }
+        );
     }
 
     @Transactional
-    public void assignBook(int id, int readerId) {
-        Book book = booksRepository.findById(id).get();
-        Reader reader = readersRepository.findById(readerId).get();
-        book.setOwner(reader);
-        book.setIssueDate(new Date());
-        booksRepository.save(book);
+    public void assignBook(int id, Reader reader) {
+        booksRepository.findById(id).ifPresent(
+                book -> {
+                    book.setOwner(reader);
+                    book.setIssueDate(new Date());
+                }
+        );
     }
 
     public List<Book> findBooksByTitlePrefix(String query) {
