@@ -31,6 +31,7 @@ public class Book {
     private int year;
 
     @Column(name = "issue_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date issueDate;
 
     @Transient
