@@ -48,7 +48,7 @@ public class ReadersService {
     }
 
     public Optional<Reader> checkUniqueName(Reader reader) {
-        return readersRepository.findByName(reader.getName()).stream().findFirst();
+        return readersRepository.findByName(reader.getName());
     }
 
     public List<Book> getBooksByReaderId(int id) {
