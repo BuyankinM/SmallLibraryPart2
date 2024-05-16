@@ -10,6 +10,7 @@ import ru.buyankin.spring.models.Reader;
 import ru.buyankin.spring.repositories.BooksRepository;
 import ru.buyankin.spring.repositories.ReadersRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -67,6 +68,7 @@ public class BooksService {
     public void freeBook(int id) {
         Book book = booksRepository.findById(id).get();
         book.setOwner(null);
+        book.setIssueDate(null);
         booksRepository.save(book);
     }
 
@@ -75,6 +77,7 @@ public class BooksService {
         Book book = booksRepository.findById(id).get();
         Reader reader = readersRepository.findById(readerId).get();
         book.setOwner(reader);
+        book.setIssueDate(new Date());
         booksRepository.save(book);
     }
 
