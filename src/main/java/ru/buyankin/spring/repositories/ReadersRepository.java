@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface ReadersRepository extends JpaRepository<Reader, Integer> {
-    Optional<Reader> findByName(String name);
+    Optional<Reader> findByNameAndIdNot(String name, int id);
 }

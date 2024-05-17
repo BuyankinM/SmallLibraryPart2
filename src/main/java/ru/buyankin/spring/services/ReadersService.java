@@ -49,7 +49,7 @@ public class ReadersService {
     }
 
     public Optional<Reader> checkUniqueName(Reader reader) {
-        return readersRepository.findByName(reader.getName());
+        return readersRepository.findByNameAndIdNot(reader.getName(), reader.getId());
     }
 
     public List<Book> getBooksByReaderId(int id) {

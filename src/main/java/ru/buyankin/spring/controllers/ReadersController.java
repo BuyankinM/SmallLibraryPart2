@@ -68,7 +68,7 @@ public class ReadersController {
             return "readers/edit";
 
         readersService.update(id, reader);
-        return "redirect:/readers";
+        return "redirect:/readers/" + id;
     }
 
     @DeleteMapping("/{id}")
