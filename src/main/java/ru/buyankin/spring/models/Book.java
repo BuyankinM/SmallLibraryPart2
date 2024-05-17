@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Entity
@@ -99,12 +96,11 @@ public class Book {
         this.owner = owner;
     }
 
-    public boolean isOverdue() {
-        if (issueDate == null)
-            return false;
+    public void setOverdue(boolean overdue) {
+        this.isOverdue = overdue;
+    }
 
-        LocalDate issueDateLocal = issueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate nowLocal = LocalDate.now();
-        return ChronoUnit.DAYS.between(issueDateLocal, nowLocal) >= 10;
+    public boolean isOverdue() {
+        return this.isOverdue;
     }
 }

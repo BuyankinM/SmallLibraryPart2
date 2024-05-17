@@ -23,13 +23,13 @@ public class ReadersController {
     }
 
     @GetMapping()
-    public String readers(Model model) {
+    public String list(Model model) {
         model.addAttribute("readers", readersService.index());
         return "readers/index";
     }
 
     @GetMapping("/{id}")
-    public String reader(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("reader", readersService.getReader(id));
         model.addAttribute("books", readersService.getBooksByReaderId(id));
         return "readers/show";
@@ -41,7 +41,7 @@ public class ReadersController {
     }
 
     @PostMapping()
-    public String createReader(@ModelAttribute("reader") @Valid Reader reader,
+    public String create(@ModelAttribute("reader") @Valid Reader reader,
                                BindingResult bindingResult) {
 
         readerValidator.validate(reader, bindingResult);

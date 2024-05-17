@@ -9,6 +9,7 @@ import ru.buyankin.spring.models.Reader;
 import ru.buyankin.spring.repositories.ReadersRepository;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,15 @@ public class ReadersService {
         Optional<Reader> reader = readersRepository.findById(id);
         if (reader.isPresent()) {
             Hibernate.initialize(reader.get().getBooks());
+
+            reader.get().getBooks().forEach(book -> {
+                long diff = new Date().getTime() - book.getIssueDate().getTime();
+
+                // 864000000 милисекунд = 10 суток
+                if (diff > 864000000)
+                    book.setOverdue(true); // книга просрочена
+            });
+
             return reader.get().getBooks();
         } else {
             return Collections.emptyList();
