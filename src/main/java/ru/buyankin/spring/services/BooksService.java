@@ -1,5 +1,6 @@
 package ru.buyankin.spring.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -52,9 +53,13 @@ public class BooksService {
     }
 
     @Transactional
-    public void update(int id, Book book) {
-        book.setId(id);
-        booksRepository.save(book);
+    public void update(int id, Book updatedBook) {
+        Book existingBook = booksRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found with id " + id));
+
+        updatedBook.setId(id);
+        updatedBook.setOwner(existingBook.getOwner()); // restoring the link with the book owner
+        booksRepository.save(updatedBook);
     }
 
     @Transactional
